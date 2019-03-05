@@ -61,7 +61,7 @@ var newQueryBtn = document.querySelector('.list');
 var li = document.createElement('li');
         
 
-     var socket = io('http://localhost:2020')
+     var socket = io('http://159.89.229.74:2020')
      
      socket.on('reconnect',()=>{
         
