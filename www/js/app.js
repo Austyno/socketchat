@@ -27,10 +27,6 @@ var app = new Framework7({
 
 var mainView = app.views.create('.view-main');
 
-// Handle Cordova Device Ready Event
-$$(document).on('deviceready', function() {
-    console.log("Device is ready!");
-});
 
 // Option 1. Using one 'page:init' handler for all pages
 $$(document).on('page:init', function (e) {
@@ -44,13 +40,22 @@ $$(document).on('page:init', '.page[data-name="about"]', function (e) {
     console.log(e);
 })
 
-let phoneNum;
+
+// Handle Cordova Device Ready Event
+$$(document).on('deviceready', function() {
+
+    let phoneNum;
 if(localStorage.getItem('clientPhone') == null){
     phoneNum = "";
 }else{
     phoneNum = JSON.parse(localStorage.getItem('clientPhone'));
     
 }
+    console.log("Device is ready!");
+});
+
+
+
 
 var phoneDiv = document.getElementById('numInput');
 var phoneInput = document.getElementById('phoneNumber');
@@ -61,7 +66,7 @@ var newQueryBtn = document.querySelector('.list');
 var li = document.createElement('li');
         
 
-     var socket = io('http://159.89.229.74:2020')
+     var socket = io('http://159.89.229.74:9000')
      
      socket.on('reconnect',()=>{
         
