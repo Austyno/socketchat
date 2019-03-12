@@ -27,6 +27,10 @@ var app = new Framework7({
 
 var mainView = app.views.create('.view-main');
 
+// Handle Cordova Device Ready Event
+$$(document).on('deviceready', function() {
+    console.log("Device is ready!");
+});
 
 // Option 1. Using one 'page:init' handler for all pages
 $$(document).on('page:init', function (e) {
@@ -40,22 +44,13 @@ $$(document).on('page:init', '.page[data-name="about"]', function (e) {
     console.log(e);
 })
 
-
-// Handle Cordova Device Ready Event
-$$(document).on('deviceready', function() {
-
-    let phoneNum;
+let phoneNum;
 if(localStorage.getItem('clientPhone') == null){
     phoneNum = "";
 }else{
     phoneNum = JSON.parse(localStorage.getItem('clientPhone'));
     
 }
-    console.log("Device is ready!");
-});
-
-
-
 
 var phoneDiv = document.getElementById('numInput');
 var phoneInput = document.getElementById('phoneNumber');
@@ -71,11 +66,9 @@ var li = document.createElement('li');
      socket.on('reconnect',()=>{
         
         socket.emit('user',phoneNum);
+        socket.emit('getClientOffLineMsg',phoneNum);
         console.log("socket reconnected");
     })
-
-
-
 
 
     socket.on('connect',function(){
@@ -84,6 +77,9 @@ var li = document.createElement('li');
         socket.emit('getClientOffLineMsg',phoneNum);
 
     }); 
+
+
+    
 
     if(phoneNum == ""){
         btn.addEventListener('click',()=>{
@@ -165,14 +161,14 @@ var li = document.createElement('li');
    socket.on('replyFromCallCenter',(data)=>{
        console.log(data);
        div.innerHTML =`<div class="card" style="margin-bottom:40px">
-        <div class="card-header"></div> 
+        <div class="card-header">${data.replyQuery}</div> 
         <div class="card-content">
             <div class="card-content-inner card-content-padding">
                 <p>${data.replyMsg}</p>
             </div>
         </div> 
         <div class="card-footer text-color-green">
-            
+        ${data.replyDate}
         </div>
     </div>`;
     listDiv.appendChild(div);
